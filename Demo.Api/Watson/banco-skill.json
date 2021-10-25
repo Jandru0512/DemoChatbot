@@ -1,0 +1,478 @@
+{
+  "intents": [
+    {
+      "intent": "adquirir_credito",
+      "examples": [
+        {
+          "text": "credito."
+        },
+        {
+          "text": "Deseo adquirir un crédito."
+        },
+        {
+          "text": "deseo adquirir un crédto"
+        },
+        {
+          "text": "Quiero tomar un cr3dito"
+        },
+        {
+          "text": "Quieto tomar un crédito"
+        },
+        {
+          "text": "Requiero un crédito."
+        }
+      ],
+      "description": "Adquirir crédito"
+    },
+    {
+      "intent": "despedida",
+      "examples": [
+        {
+          "text": "Adios"
+        },
+        {
+          "text": "Chao"
+        },
+        {
+          "text": "Hasta luego"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "horarios",
+      "examples": [
+        {
+          "text": "Deseo conocer los horarios del banco."
+        },
+        {
+          "text": "Deseo saber el horario."
+        },
+        {
+          "text": "¿Hasta qué hora tienen atención?"
+        },
+        {
+          "text": "Hasta qué hora tienen atención?"
+        },
+        {
+          "text": "Quiero conocer el horario."
+        },
+        {
+          "text": "Tengo una inquietud respecto a los horarios."
+        }
+      ],
+      "description": "Responde los horarios que posee el banco en un día de la semana."
+    },
+    {
+      "intent": "saludar",
+      "examples": [
+        {
+          "text": "Buenas"
+        },
+        {
+          "text": "Buenas noches"
+        },
+        {
+          "text": "Buenas tardes"
+        },
+        {
+          "text": "Buenos días"
+        },
+        {
+          "text": "Hola"
+        },
+        {
+          "text": "Holi"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sys-date",
+      "values": [],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "sys-number",
+      "values": [],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "tipo_credito",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "hipotecario",
+          "synonyms": [
+            "hipote"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "libre inversion",
+          "synonyms": [
+            "libre",
+            "libre inversión"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "metadata": {
+    "api_version": {
+      "major_version": "v2",
+      "minor_version": "2018-11-08"
+    }
+  },
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "title": "Bienvenido",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hola. ¿Cómo puedo ayudarte?"
+              },
+              {
+                "text": "Hola. ¿En qué te puedo ayudar?"
+              },
+              {
+                "text": "Hola ¿Qué deseas el día de hoy?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "conditions": "welcome",
+      "dialog_node": "Bienvenido"
+    },
+    {
+      "type": "standard",
+      "title": "En otras cosas",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "No le he entendido. Intente reformular la consulta."
+              },
+              {
+                "text": "¿Puede expresarse con otras palabras? No le he entendido."
+              },
+              {
+                "text": "No entendí el significado."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "conditions": "anything_else",
+      "dialog_node": "En otras cosas",
+      "previous_sibling": "node_2_1635171825850",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Qué tipo de crédito desea adquirir?"
+              },
+              {
+                "text": "¿Qué tipo de crédito?"
+              },
+              {
+                "text": "Especifique el tipo de crédito."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "parent": "slot_8_1635172466579",
+      "event_name": "focus",
+      "dialog_node": "handler_10_1635172466592",
+      "previous_sibling": "handler_5_1635172466592"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Qué cantidad y tipo de crédito desea adquirir?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "parent": "node_9_1635171136907",
+      "event_name": "focus",
+      "dialog_node": "handler_1_1635172466175"
+    },
+    {
+      "type": "event_handler",
+      "parent": "node_9_1635177708274",
+      "event_name": "focus",
+      "dialog_node": "handler_1_1635177756353"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_2_1635177756834",
+      "context": {
+        "day": "@sys-date"
+      },
+      "conditions": "@sys-date",
+      "event_name": "input",
+      "dialog_node": "handler_2_1635177756841"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_8_1635172466579",
+      "context": {
+        "tipo_credito": "@tipo_credito"
+      },
+      "conditions": "@tipo_credito",
+      "event_name": "input",
+      "dialog_node": "handler_5_1635172466592"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Qué día de la semana?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_2_1635177756834",
+      "event_name": "focus",
+      "dialog_node": "handler_6_1635177756841",
+      "previous_sibling": "handler_2_1635177756841"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_1_1635178034198",
+      "context": {
+        "number": "@sys-number > 10000"
+      },
+      "conditions": "@sys-number > 10000",
+      "event_name": "input",
+      "dialog_node": "handler_7_1635178034198"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Por qué cantidad desea el crédito?"
+              },
+              {
+                "text": "Ingrese el valor del crédito."
+              },
+              {
+                "text": "Especifique la cantidad por la que va a solicitar el crédito."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "parent": "slot_1_1635178034198",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1635178034198",
+      "previous_sibling": "handler_7_1635178034198"
+    },
+    {
+      "type": "standard",
+      "title": "Despedida",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Vuelve pronto."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "conditions": "#Despedida",
+      "dialog_node": "node_2_1635171825850",
+      "previous_sibling": "node_9_1635171136907"
+    },
+    {
+      "type": "standard",
+      "title": "Saludo",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hola ¿Cómo estás?"
+              },
+              {
+                "text": "Hola ¿En qué te puedo ayudar?"
+              },
+              {
+                "text": "Buenos días."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_9_1635172277786"
+      },
+      "conditions": "#saludar",
+      "dialog_node": "node_4_1635172204463",
+      "previous_sibling": "node_9_1635177708274"
+    },
+    {
+      "type": "frame",
+      "title": "Adquirir crédito",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Su interés es de 1.5%."
+              },
+              {
+                "text": "Solicitud creada."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "context": {},
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1635171825850"
+      },
+      "conditions": "#adquirir_credito",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_9_1635171136907",
+      "previous_sibling": "node_9_1635172277786"
+    },
+    {
+      "type": "standard",
+      "title": "Qué desea",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Cómo te puedo ayudar?"
+              },
+              {
+                "text": "¿Qué deseas?"
+              },
+              {
+                "text": "¿Qué necesitas?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "random"
+          }
+        ]
+      },
+      "conditions": "",
+      "dialog_node": "node_9_1635172277786",
+      "previous_sibling": "node_4_1635172204463"
+    },
+    {
+      "type": "frame",
+      "title": "Conocer horarios",
+      "conditions": "#horarios",
+      "dialog_node": "node_9_1635177708274",
+      "previous_sibling": "Bienvenido"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_9_1635171136907",
+      "variable": "$number",
+      "conditions": "",
+      "dialog_node": "slot_1_1635178034198",
+      "previous_sibling": "slot_8_1635172466579"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_9_1635177708274",
+      "variable": "$day",
+      "dialog_node": "slot_2_1635177756834",
+      "previous_sibling": "handler_1_1635177756353"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_9_1635171136907",
+      "variable": "$tipo_credito",
+      "dialog_node": "slot_8_1635172466579",
+      "previous_sibling": "handler_1_1635172466175"
+    }
+  ],
+  "counterexamples": [
+    {
+      "text": "mañana"
+    }
+  ],
+  "system_settings": {
+    "disambiguation": {
+      "prompt": "Querías decir:",
+      "enabled": true,
+      "randomize": true,
+      "max_suggestions": 5,
+      "suggestion_text_policy": "title",
+      "none_of_the_above_prompt": "Ninguna de las anteriores"
+    },
+    "human_agent_assist": {
+      "prompt": "Querías decir:"
+    },
+    "intent_classification": {
+      "training_backend_version": "v2"
+    }
+  },
+  "learning_opt_out": false,
+  "name": "Banco",
+  "language": "es",
+  "description": ""
+}
